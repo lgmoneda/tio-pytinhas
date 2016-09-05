@@ -13,7 +13,7 @@ Folder Structure
 
 ## Setup
 
-´´´
+``` 
 sudo apt-get install python-opencv
 
-´´´
+```
