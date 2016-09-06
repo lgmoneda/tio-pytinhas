@@ -20,7 +20,7 @@ def gen_images_for_single_coin(cap, totaltime=300, live=False, rate=5):
 
 def main():
 	cap = setup_webcam(1)
-	gen_images_for_single_coin(cap, totaltime=30, live=True)
+	gen_images_for_single_coin(cap, totaltime=150, live=True)
 	release_webcam(cap)
 
 main()

@@ -1,7 +1,9 @@
 # tio-pytinhas
 Contador de valores monetários utilizando visão computacional
 
+<div align="center">
 ![Image of Tio Patinhas](/img/tio-patinhas.jpg)
+</div>
 
 Folder Structure
 
