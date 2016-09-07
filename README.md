@@ -1,9 +1,8 @@
 # tio-pytinhas
 Contador de valores monetários utilizando visão computacional
 
-![Image of Tio Patinhas](https://github.com/lgmoneda/tio-pytinhas/blob/master/img/tio-patinhas.jpg?raw=true "Tio Patinhas")
-
 <div align="center">
+	<img src="https://github.com/lgmoneda/tio-pytinhas/blob/master/img/tio-patinhas.jpg?raw=true"/>
 </div>
 
 Folder Structure
