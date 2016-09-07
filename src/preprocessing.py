@@ -1,9 +1,24 @@
 import cv2
 import numpy as np
 import os, sys
-# load the image, clone it for output, and then convert it to grayscale
 
 def extract_coins(file_, folder):
+	"""Detect round objects in a image and extract as new images
+
+	Takes a image file, find all round objects and extract them as
+	new images. Uses opencv function HoughCircles to detect circles.
+	Then make a new image file using center position and radius info
+	about it, save in a folder called "extracted", which is in the 
+	folder passed.
+
+	Args:
+		file_: string with image file name.
+		folder: the folder it is in and where the extracted folder
+				will be.
+	Returns:
+		None.
+
+	"""
 	image = cv2.imread(folder + file_)
 	output = image.copy()
 	gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -29,9 +44,7 @@ def extract_coins(file_, folder):
 			# draw the circle in the output image, then draw a rectangle
 			# corresponding to the center of the circle
 			cv2.circle(output, (x, y), r, (0, 255, 0), 4)
-			cv2.rectangle(output, (x - 5, y - 5), (x + 5, y + 5), (0, 128, 255), -1)
-
-			
+			cv2.rectangle(output, (x - 5, y - 5), (x + 5, y + 5), (0, 128, 255), -1)	
 
 			r += 8
 			coin = image[y-r:y+r,x-r:x+r]
@@ -43,21 +56,18 @@ def extract_coins(file_, folder):
 		# show the output image
 		#cv2.imshow("output", np.hstack([image, output]))
 		#cv2.waitKey(0)
-		
+	
+def extract_from_all_raw():
+	"""extract coins from all raw images
 
-def face_cut(file_path):
-	rects, img = detect(file_path)
-	filename = file_path[:-4]
-	faces = []
-	i = 1
-	for rect in rects:
-		x1, y1, x2, y2 = rect
-		print x1, y1, x2, y2
-		face = img[y1:y2, x1:x2]
-		cv2.imwrite(filename + "_face_" + str(i) + ".jpg", face)
-		i = i + 1
+	Goes through all raw images folders and extract all the detected
+	coins from them. 
 
-def main():
+	Args:
+		None
+	Returns
+		None
+	"""
 	values = ["1", "5", "10", "25", "50", "100"]
 	for value in values:
 		folder = "../data/" + value + "/"
@@ -67,5 +77,8 @@ def main():
 
 		for file_ in onlyfiles:
 			extract_coins(file_, folder)
+
+def main():
+	#extract_from_all_raw()
 
 main()
