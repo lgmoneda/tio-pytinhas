@@ -3,3 +3,6 @@ http://www.pyimagesearch.com/2014/07/21/detecting-circles-images-using-opencv-ho
 
 Fala um pouco sobre sliding windows, se for o caso de termos que usar explicitamente. 
 http://www.pyimagesearch.com/2014/11/10/histogram-oriented-gradients-object-detection/
+
+Contornando moedas 
+http://blog.christianperone.com/2014/06/simple-and-effective-coin-segmentation-using-python-and-opencv/

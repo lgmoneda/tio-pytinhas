@@ -54,8 +54,8 @@ def extract_coins(file_, folder):
 			coins.append(cv2.imwrite(folder + "/extracted/" + file_[:-4] + "_coin_" + str(i) + ".jpg", coin))
 	 
 		# show the output image
-		#cv2.imshow("output", np.hstack([image, output]))
-		#cv2.waitKey(0)
+		cv2.imshow("output", np.hstack([image, output]))
+		cv2.waitKey(0)
 	
 def extract_from_all_raw():
 	"""extract coins from all raw images
@@ -80,5 +80,6 @@ def extract_from_all_raw():
 
 def main():
 	#extract_from_all_raw()
+	extract_coins("10_1473117300.jpg", "../data/10/")
 
 main()

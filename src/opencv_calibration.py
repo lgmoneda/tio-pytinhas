@@ -14,7 +14,14 @@ def extract_coins(file_, folder):
 	#image = cv2.copyMakeBorder(image,border_size,border_size,border_size,border_size,cv2.BORDER_CONSTANT,value=BLACK)
 
 	# detect circles in the image
-	circles = cv2.HoughCircles(gray, cv2.cv.CV_HOUGH_GRADIENT, 0.4, 50)
+	#circles = cv2.HoughCircles(gray, cv2.cv.CV_HOUGH_GRADIENT, 0.4, 50)
+	
+	circles = cv2.HoughCircles(gray, cv2.cv.CV_HOUGH_GRADIENT, 1.5, 150,
+              param1=1,
+              param2=5,
+              minRadius=20,
+              maxRadius=300)
+
 	coins = [] 
 	i = 0
 	# ensure at least some circles were found
