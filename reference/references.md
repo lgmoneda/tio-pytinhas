@@ -6,3 +6,9 @@ http://www.pyimagesearch.com/2014/11/10/histogram-oriented-gradients-object-dete
 
 Contornando moedas 
 http://blog.christianperone.com/2014/06/simple-and-effective-coin-segmentation-using-python-and-opencv/
+
+Várias coisas de idenficação de imagem
+http://scikit-image.org/docs/dev/auto_examples/
+
+Algoritmo watershed
+http://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_watershed/py_watershed.html#watershed
