@@ -4,7 +4,7 @@ import os
 
 def gen_images_for_single_coins_sum(cap, totaltime=300, live=False, 
 									rate=5):
-"""Takes labeled frames for coins sum from a capturer
+	"""Takes labeled frames for coins sum from a capturer
 
 	Receives a capturer to save frames from. A total time is passed
 	as the time we'll be taking the frames, in a rate defined by a
@@ -21,10 +21,10 @@ def gen_images_for_single_coins_sum(cap, totaltime=300, live=False,
 		rate: integer seconds interval between saved frames.
 	Returns:
 		None 
-"""
+	"""
 	value = raw_input("What's the coins sum?")
 	diretory = "../data/deeplearning/" + str(value) + "/"
-	diretoryAll = "../data/deeplearning/all"
+	diretoryAll = "../data/deeplearning/all/"
 
 	font = cv2.FONT_HERSHEY_SIMPLEX
 
