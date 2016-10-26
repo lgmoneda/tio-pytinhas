@@ -31,7 +31,7 @@ def loadModel():
 	model.add(Dense(5))
 	model.add(Activation('softmax'))
 
-	model.load_weights("classificador.h5")
+	model.load_weights("classificador_5.h5")
 
 	return model
 
@@ -46,27 +46,21 @@ def my_img_to_array(image_file):
     image_width = image_width / ratio
     image_height = image_height / ratio
 
-
     channels = 3
     nb_classes = 1
 
     my_image = np.ndarray(shape=(1, channels, image_height, image_width),
                          dtype=np.float32)
 
-   
-    img = load_img(image_file)  # this is a PIL image
+    ### PIL image
+    img = load_img(image_file)  
     img.thumbnail((image_width, image_height))
-    #img = img.convert('L')
-    # Transformando em Numpy Array
     x = img_to_array(img)  
-    #print(x.shape)
-    #x = x.reshape((1,) + x.shape)
-    # Normalizando
+
+    ### Normalizando
     x = (x - 128.0) / 128.0
     my_image[0] = x
-    #i += 1
-    #if i % 100 == 0:
-        #print("%d images to array" % i)
+
     
     return my_image
 
