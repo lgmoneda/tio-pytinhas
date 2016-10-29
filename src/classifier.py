@@ -9,8 +9,13 @@ import time
 import os
 from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_array, load_img
 
+### Make some noooise
+import pyttsx
+
+
 def loadModel():
 	input_shape = (3, 120, 160)
+
 	model = Sequential()
 	model.add(Convolution2D(32, 3, 3, input_shape=input_shape))
 	model.add(Activation('relu'))
@@ -32,6 +37,37 @@ def loadModel():
 	model.add(Activation('softmax'))
 
 	model.load_weights("classificador_5.h5")
+
+	return model
+
+def loadModel2():
+	input_shape = (3, 120, 160)
+
+	model = Sequential()
+	model.add(Convolution2D(64, 3, 3, input_shape=input_shape))
+	model.add(Activation('relu'))
+	model.add(MaxPooling2D(pool_size=(2, 2)))
+
+	model.add(Convolution2D(64, 3, 3))
+	model.add(Activation('relu'))
+	model.add(MaxPooling2D(pool_size=(2, 2)))
+
+	model.add(Convolution2D(128, 3, 3))
+	model.add(Activation('relu'))
+	model.add(MaxPooling2D(pool_size=(2, 2)))
+
+	model.add(Convolution2D(256, 3, 3))
+	model.add(Activation('relu'))
+	model.add(MaxPooling2D(pool_size=(2, 2)))
+
+	model.add(Flatten()) 
+	model.add(Dense(64))
+	model.add(Activation('relu'))
+	model.add(Dropout(0.5))
+	model.add(Dense(5))
+	model.add(Activation('softmax'))
+
+	model.load_weights("classificador2_2.h5")
 
 	return model
 
@@ -64,10 +100,15 @@ def my_img_to_array(image_file):
     
     return my_image
 
-def classify_single_image(model, img):
+def classify_single_image(model, img, verbose=False):
 	labels = {"5": 0, "10": 1, "25": 2, "50":3, "100":4} 
-	prediction = np.argmax(model.predict(img))
-	print("Previsão: {0}".format(labels.keys()[labels.values().index(prediction)]))
+	probabilities = model.predict(img)
+	if verbose:
+		print("Probabilidades: ")
+		for i in range(len(probabilities[0])):
+			print(str(labels.keys()[labels.values().index(i)]) + ": {0:.4f}".format(probabilities[0][i]))
+	prediction = np.argmax(probabilities)
+	#print("Previsão: {0}".format(labels.keys()[labels.values().index(prediction)]))
 	return labels.keys()[labels.values().index(prediction)]
 
 def save_new_image(cap):
@@ -76,21 +117,48 @@ def save_new_image(cap):
 	diretory = "../data/classifier_log/" 
 	ret, frame = cap.read()
 	save_frame(cap, diretory, filename)
+	time.sleep(.5)
 
 	filePath = diretory + "/" + filename
 	return filePath
 
-if __name__ == '__main__':
+def returnSpeech(prediction):
+	speechs = {"5": "Cinco centavos",
+			   "10": "Dez centavos",
+			   "25": "Vinte e cinco centavos",
+			   "50": "Cinquenta centavos",
+			   "100": "Um real"}
+	return speechs[prediction]
 
-	cap = setup_webcam(1)
+if __name__ == '__main__':
+	from collections import Counter
+	engine = pyttsx.init()
+	engine.setProperty('voice', "brazil")
+
+	cap = setup_webcam(0)
 
 	model = loadModel()
 	key = "olá, amiguinho!"
+	
+
 	while(key != "q"):
 		key = raw_input("Pressione enter para previsão ou q para sair")
-		image_file = save_new_image(cap)
-		img = my_img_to_array(image_file)
-		prediction = classify_single_image(model, img)
+		start = time.time()
+		predictions = []
+		for i in range(5):
+			image_file = save_new_image(cap)
+			if i > 2:
+				img = my_img_to_array(image_file)
+				predictions.append(classify_single_image(model, img)) 
+		#print(predictions)
+		prediction = Counter(predictions[:]).most_common(1)[0][0]
+		print("Previsão: {0}, em {1:.2f}s.".format(prediction, time.time() - start))
+		engine = pyttsx.init()
+		speech = returnSpeech(prediction)
+		engine.say(speech, name=speech)
+		engine.say(" ")
+		engine.runAndWait()
+		engine.stop()
 
 
 	release_webcam(cap)
