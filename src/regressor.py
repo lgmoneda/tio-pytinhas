@@ -31,12 +31,11 @@ def loadModel():
 
 	model.add(Flatten()) 
 	model.add(Dense(64))
-	model.add(Activation('relu'))
+	model.add(Activation('linear'))
 	model.add(Dropout(0.5))
-	model.add(Dense(5))
-	model.add(Activation('softmax'))
+	model.add(Dense(1))
 
-	model.load_weights("classificador_5.h5")
+	model.load_weights("regressor3.h5")
 
 	return model
 
@@ -102,14 +101,10 @@ def my_img_to_array(image_file):
 
 def classify_single_image(model, img, verbose=False):
 	labels = {"5": 0, "10": 1, "25": 2, "50":3, "100":4} 
-	probabilities = model.predict(img)
-	if verbose:
-		print("Probabilidades: ")
-		for i in range(len(probabilities[0])):
-			print(str(labels.keys()[labels.values().index(i)]) + ": {0:.4f}".format(probabilities[0][i]))
-	prediction = np.argmax(probabilities)
+	prediction = model.predict(img)[0]
+
 	#print("Previsão: {0}".format(labels.keys()[labels.values().index(prediction)]))
-	return labels.keys()[labels.values().index(prediction)]
+	return int(abs(prediction))
 
 def save_new_image(cap):
 
@@ -123,12 +118,29 @@ def save_new_image(cap):
 	return filePath
 
 def returnSpeech(prediction):
-	speechs = {"5": "Cinco centavos",
-			   "10": "Dez centavos",
-			   "25": "Vinte e cinco centavos",
-			   "50": "Cinquenta centavos",
-			   "100": "Um real"}
-	return speechs[prediction]
+
+	prediction = int(prediction)
+	reais = prediction/100
+	centavos = prediction%100
+	msg2 = ""
+	if reais < 1:
+		return str(centavos) + " centavos."
+	else:
+		if reais == 1:
+			msg1 = str(1) + " real"
+		else:
+			msg1 = str(reais) + " reais"
+		if prediction%100 != 0:
+			msg2 = " e " + str(centavos) + " centavos"
+
+	return msg1 + msg2
+
+### Fazendo com que previsoes sejam multiplos de 5
+def closer_multiple(x, mult=5):
+    value = mult * int(x / mult)
+    if (x % mult) > mult/2.0:
+        value += mult
+    return value
 
 if __name__ == '__main__':
 	from collections import Counter
@@ -145,13 +157,14 @@ if __name__ == '__main__':
 		key = raw_input("Pressione enter para previsão ou q para sair")
 		start = time.time()
 		predictions = []
-		for i in range(5):
+		for i in range(6):
 			image_file = save_new_image(cap)
 			if i > 2:
 				img = my_img_to_array(image_file)
 				predictions.append(classify_single_image(model, img, verbose=True)) 
 		print(predictions)
-		prediction = Counter(predictions[:]).most_common(1)[0][0]
+		prediction = sum(predictions)/len(predictions)
+		prediction = closer_multiple(prediction)
 		print("Previsão: {0}, em {1:.2f}s.".format(prediction, time.time() - start))
 		engine = pyttsx.init()
 		speech = returnSpeech(prediction)

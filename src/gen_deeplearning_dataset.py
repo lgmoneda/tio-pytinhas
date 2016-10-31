@@ -51,7 +51,7 @@ def gen_images_for_single_coins_sum(cap, totaltime=300, live=False,
 			cv2.waitKey(1)
 
 def main():
-	cap = setup_webcam(1)
+	cap = setup_webcam(0)
 	gen_images_for_single_coins_sum(cap, totaltime=180, live=True)
 	release_webcam(cap)
 
