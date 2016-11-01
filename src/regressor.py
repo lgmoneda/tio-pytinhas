@@ -111,11 +111,20 @@ def save_new_image(cap):
 	filename = str(int(time.time())) + ".jpg"
 	diretory = "../data/classifier_log/" 
 	ret, frame = cap.read()
+	print(frame.shape)
 	save_frame(cap, diretory, filename)
 	time.sleep(.5)
 
 	filePath = diretory + "/" + filename
 	return filePath
+
+def returnImageArray(cap):
+	ret, frame = cap.read()
+	dim = (120, 160)
+	resized = cv2.resize(frame, dim, interpolation = cv2.INTER_AREA)
+
+
+	return frame
 
 def returnSpeech(prediction):
 
@@ -159,6 +168,7 @@ if __name__ == '__main__':
 		predictions = []
 		for i in range(6):
 			image_file = save_new_image(cap)
+			#img = returnImageArray(cap)
 			if i > 2:
 				img = my_img_to_array(image_file)
 				predictions.append(classify_single_image(model, img, verbose=True)) 
