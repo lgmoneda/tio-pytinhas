@@ -102,4 +102,4 @@ def main():
 	save_frame(cap, "../data/", "teste2.jpg")
 	release_webcam(cap)
 
-main()
+#main()
